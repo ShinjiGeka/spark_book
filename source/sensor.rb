@@ -82,24 +82,22 @@ file.each_line do |next_line|
 		if whc < 0 then
 			whc = 0 
 		end
-		# 適度にエラーデータを入れるブロック。
-		random_number = random.rand(1..20000)
-		if random_number == 20000 then
-		 	temperature = nil # 気温がNULL
-		end
-		if random_number == 19999 then
-			humidity += 100 # 湿度が100%を超える。
-		end
 		# 時間を５分進める。(iはゼロから始まる。) 
 		date_time = current_date_time + (i * 60 * 5)
 		case type
 			when "csv" then
 				print date_time.strftime("%F %H:%M"), ",", id, ",", lon, ",", lat, ",", temperature, ",", humidity, ",", pH, ",", whc,"\n"
 			when "json" then
-				print "{\"id\":", id, ",", "\n"
-				print "\"date\":", date_time.strftime("%F %H:%M"), ",", "\n"
-				print "\"coord\":{\"lon\":",lon, ", ", "\"lat\":", lat, "},", "\n"
-				print "\"main\":{\"temperature\":", temperature, ", ", "\"humidity\":", humidity, ", ", "\"ph\":", pH, ", ", "\"whc\":", whc, "}}", "\n"
+				print "{\"id\":", id, ", "
+				print "\"date\":", "\"", date_time.strftime("%F %H:%M"), "\"", ", "
+				print "\"coord\":{\"lon\":",lon, ", ", "\"lat\":", lat, "}, "
+				# 適度にエラーデータを入れる。
+				random_number = random.rand(1..10000)
+				if random_number == 10000 then
+					print "\"main\":\"\"}", "\n"
+				else
+					print "\"main\":{\"temperature\":", temperature, ", ", "\"humidity\":", humidity, ", ", "\"ph\":", pH, ", ", "\"whc\":", whc, "}}", "\n"
+				end
 			else
 		end
 
